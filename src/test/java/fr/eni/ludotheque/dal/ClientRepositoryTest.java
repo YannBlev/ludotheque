@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
+@Transactional
 public class ClientRepositoryTest {
 
     @Autowired
@@ -19,7 +20,6 @@ public class ClientRepositoryTest {
     AdresseRepository adresseRepository;
 
     @Test
-    //@Transactional
     public void testInsertClientCasPositif(){
         //AAA
         //Arrange (préparer)
