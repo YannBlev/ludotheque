@@ -2,6 +2,10 @@ spring:
   application:
     name: ludotheque
 
+  sql:
+    init:
+      mode: always
+
   #Connection to DB
   datasource:
     url: jdbc:sqlserver://localhost;databasename=LUDO_BD;integratedSecurity=false;encrypt=false;trustServerCertificate=false
@@ -10,10 +14,10 @@ spring:
 
   #Options to DB
   jpa:
+    defer-datasource-initialization: true
     show-sql: true
     properties:
       hibernate:
         format_sql: true
     hibernate:
       ddl-auto: create
-
