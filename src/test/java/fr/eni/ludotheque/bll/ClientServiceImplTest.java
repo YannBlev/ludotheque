@@ -10,11 +10,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import java.util.List;
-import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
@@ -48,9 +45,7 @@ public class ClientServiceImplTest {
 
     @Test
     void testTrouverClient() {
-        //Arrange (Préparation du test)
-
-        //Act (Appel de la méthode à vérifier)
+        //Arrange + Act
         List<Client> clients = clientService.trouverParNomClient("Pi");
 
         //Assert
@@ -110,5 +105,22 @@ public class ClientServiceImplTest {
         );
 
         Assertions.assertEquals("ID inexistant", exception.getMessage());
+    }
+
+    @Test
+    void testModifierAdresseClient(){
+        //Arrange
+        Adresse adresse = adresseRepository.findById(1L).orElse(null);
+        Client client = clientRepository.findById(1L).orElse(null);
+
+        //Act
+        System.out.println("********************* PREMIERE ADRESSE **********************");
+        System.out.println(client.getAdresse());
+        clientService.modifierAdresseClient(adresse, client);
+
+        //Assert
+        System.out.println("********************* NOUVELLE ADRESSE **********************");
+        System.out.println(client.getAdresse());
+        assertThat(client.getAdresse()).isEqualTo(adresse);
     }
 }

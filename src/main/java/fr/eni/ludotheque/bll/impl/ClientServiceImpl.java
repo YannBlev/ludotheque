@@ -1,6 +1,7 @@
 package fr.eni.ludotheque.bll.impl;
 
 import fr.eni.ludotheque.bll.ClientService;
+import fr.eni.ludotheque.bo.Adresse;
 import fr.eni.ludotheque.bo.Client;
 import fr.eni.ludotheque.dal.ClientRepository;
 import fr.eni.ludotheque.exception.FormatInvalide;
@@ -40,15 +41,24 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client modifierClient(Client client) {
-        if (client.getId() == null) {
-            throw new FormatInvalide("ID inexistant");
-        }
-
-        if (!clientRepository.existsById(client.getId())) {
-            throw new FormatInvalide("Client introuvable");
-        }
-
-        return clientRepository.save(client);
+    public boolean clientValide(Client client) {
+        if (client.getId() == null) throw new FormatInvalide("ID inexistant");
+        if (!clientRepository.existsById(client.getId()))  throw new FormatInvalide("Client introuvable");
+        return true;
     }
+
+    @Override
+    public void modifierClient(Client client) {
+        if(clientValide(client)) clientRepository.save(client);
+    }
+
+    @Override
+    public void modifierAdresseClient(Adresse adresse, Client client) {
+        if(clientValide(client)) {
+            client.setAdresse(adresse);
+            clientRepository.save(client);
+        };
+    }
+
+
 }
