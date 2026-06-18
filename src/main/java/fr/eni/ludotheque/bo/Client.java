@@ -36,5 +36,4 @@ public class Client {
     @JoinColumn(name="no_adresse")
     @NonNull private Adresse adresse;
 
-
 }
