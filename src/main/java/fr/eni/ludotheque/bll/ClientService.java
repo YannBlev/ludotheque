@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface ClientService {
     Client ajouterClient(Client client);
     List<Client> trouverParNomClient(String nom);
+    Client modifierClient(Client client);
 }

@@ -3,6 +3,7 @@ package fr.eni.ludotheque.bll.impl;
 import fr.eni.ludotheque.bll.ClientService;
 import fr.eni.ludotheque.bo.Client;
 import fr.eni.ludotheque.dal.ClientRepository;
+import fr.eni.ludotheque.exception.FormatInvalide;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -36,5 +37,18 @@ public class ClientServiceImpl implements ClientService {
             }
         });
         return clientsTrouves;
+    }
+
+    @Override
+    public Client modifierClient(Client client) {
+        if (client.getId() == null) {
+            throw new FormatInvalide("ID inexistant");
+        }
+
+        if (!clientRepository.existsById(client.getId())) {
+            throw new FormatInvalide("Client introuvable");
+        }
+
+        return clientRepository.save(client);
     }
 }
