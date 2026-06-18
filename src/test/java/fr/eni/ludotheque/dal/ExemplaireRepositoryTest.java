@@ -24,15 +24,16 @@ public class ExemplaireRepositoryTest {
         //Arrange
         Jeu domino = jeuRepository.findByTitre("Domino").orElseThrow();
 
-        Exemplaire exDomino = new Exemplaire();
-        exDomino.setCodebarre("0000000000001");
-        exDomino.setEstLouable(false);
-        exDomino.setJeu(domino);
+        Exemplaire exemplaire = new Exemplaire();
+        exemplaire.setCodebarre("0000000000001");
+        exemplaire.setLouable(false);
+        exemplaire.setJeu(domino);
 
         //Act
-        Exemplaire ex = exemplaireRepository.save(exDomino);
+        exemplaireRepository.save(exemplaire);
 
         //Assert
-        assertThat(ex.getId()).isNotNull();
+        Exemplaire exemplaireBD = exemplaireRepository.findById(exemplaire.getId()).orElseThrow();
+        assertThat(exemplaireBD.getId()).isNotNull();
     }
 }

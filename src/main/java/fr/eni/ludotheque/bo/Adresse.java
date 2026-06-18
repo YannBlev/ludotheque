@@ -18,14 +18,13 @@ public class Adresse {
     @Column(name = "no_adresse")
     private Long id;
 
-    @NonNull
-    private String rue;
+    @Column(length = 100, nullable = false)
+    @NonNull private String rue;
 
-    @NonNull
-    @Column(name = "code_postal")
-    private String code;
+    @Column(name = "code_postal", length = 5, nullable = false)
+    @NonNull private String codePostal;
 
-    @NonNull
-    private String ville;
+    @Column(length = 100, nullable = false)
+    @NonNull private String ville;
 
 }

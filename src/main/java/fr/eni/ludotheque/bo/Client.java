@@ -20,21 +20,21 @@ public class Client {
     @Column(name = "no_client")
     private Long id;
 
-    @NonNull
-    private String nom;
+    @Column(length = 50, nullable = false)
+    @NonNull private String nom;
 
-    @NonNull
-    private String prenom;
+    @Column(length = 50, nullable = false)
+    @NonNull private String prenom;
 
-    @NonNull
-    private String email;
+    @Column(length = 50, nullable = false, unique = true)
+    @NonNull private String email;
 
-    @Column(name = "no_telephone")
-    private String telephone;
+    @Column(name = "no_telephone", length = 15, nullable = true)
+    private String noTelephone;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch=FetchType.EAGER, orphanRemoval = true)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch=FetchType.EAGER, orphanRemoval = true, optional = false)
     @JoinColumn(name="no_adresse")
-    private Adresse adresse;
+    @NonNull private Adresse adresse;
 
 
 }

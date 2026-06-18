@@ -18,14 +18,16 @@ public class Exemplaire {
     @Column(name = "no_exemplaire")
     private Long id;
 
-    @NonNull
-    private String codebarre;
+    @Column(length=13, nullable = false, unique = true)
+    @NonNull private String codebarre;
 
     @NonNull
-    private Boolean estLouable;
+    @Basic(optional = false)
+    private Boolean louable;
 
     @ManyToOne
-    @JoinColumn(name = "no_jeu")
+    @JoinColumn(name="no_jeu", referencedColumnName = "no_jeu")
+    @NonNull
     private Jeu jeu;
 
 }

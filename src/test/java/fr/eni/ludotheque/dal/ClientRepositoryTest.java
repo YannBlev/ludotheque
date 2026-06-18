@@ -3,6 +3,7 @@ package fr.eni.ludotheque.dal;
 import fr.eni.ludotheque.bo.Adresse;
 import fr.eni.ludotheque.bo.Client;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,25 +21,24 @@ public class ClientRepositoryTest {
     AdresseRepository adresseRepository;
 
     @Test
+    @DisplayName("Test positif de creation d'un client en BD")
     public void testInsertClientCasPositif(){
         //AAA
         //Arrange (préparer)
-        clientRepository.deleteAll();
-        adresseRepository.deleteAll();
+        Adresse adresse = adresseRepository.findById(1L).orElseThrow();
 
-        Adresse a1 = new Adresse("rue des lilas", "50000", "RODENDINDRON");
+        Client client = new Client();
+        client.setNom("BIHAN");
+        client.setPrenom("Anna");
+        client.setEmail("anna.bihan@email.test");
 
-        Client anna = new Client();
-        anna.setNom("BIHAN");
-        anna.setPrenom("Anna");
-        anna.setEmail("anna.bihan@email.test");
-
-        anna.setAdresse(a1);
+        client.setAdresse(adresse);
 
         //Act
-        Client clientBD = clientRepository.save(anna);
+        clientRepository.save(client);
 
         //Assert (vérifier)
+        Client clientBD = clientRepository.findById(client.getId()).orElseThrow();
         assertThat(clientBD).isNotNull();
         assertThat(clientBD.getId()).isNotNull();
         assertThat(clientBD.getNom()).isNotNull();

@@ -18,7 +18,6 @@ public class Genre {
     @Column(name = "no_genre")
     private Long id;
 
-    @NonNull
-    private String libelle;
+    @NonNull private String libelle;
 
 }

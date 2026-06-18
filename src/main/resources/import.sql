@@ -1,3 +1,5 @@
+insert into ADRESSE (code_postal, rue, ville) values ('29000', '3, rue des lilas', 'Quimper');
+
 insert into GENRE (libelle) values ('plateau');
 insert into GENRE (libelle) values ('strategie');
 insert into GENRE (libelle) values ('famille');

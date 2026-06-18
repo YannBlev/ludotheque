@@ -19,36 +19,32 @@ class JeuRepositoryTest {
     @Autowired
     private GenreRepository genreRepository;
 
-
     @Test
     void testInsertionJeuAvecGenres() {
 
-        // Recherche des genres présents dans import.sql
+        // Arrange
         Genre plateau = genreRepository.findByLibelle("plateau").orElseThrow();
         Genre famille = genreRepository.findByLibelle("famille").orElseThrow();
 
+        Jeu jeu = new Jeu();
+        jeu.setTitre("Puzzle");
+        jeu.setReference("PUZ-001");
+        jeu.setDescription("Est-ce vraiment un jeu ?");
+        jeu.setDuree(90);
+        jeu.setTarifJour(3.5f);
 
-        // Création d'un jeu
-        Jeu puzzle = new Jeu();
-        puzzle.setTitre("Puzzle");
-        puzzle.setReference("PUZ-001");
-        puzzle.setDescription("Est-ce vraiment un jeu ?");
-        puzzle.setDuree(90);
-        puzzle.setTarifJour(3.5f);
+        jeu.addGenre(plateau);
+        jeu.addGenre(famille);
 
-        puzzle.addGenre(plateau);
-        puzzle.addGenre(famille);
+        // Act
+        jeuRepository.save(jeu);
 
-        // Sauvegarde
-        Jeu jeuSauve = jeuRepository.save(puzzle);
+        // Assert
+        Jeu jeuBD = jeuRepository.findById(jeu.getId()).orElseThrow();
 
-        // Lecture depuis la base
-        Jeu jeuRelu = jeuRepository.findById(jeuSauve.getId()).orElseThrow();
-
-        // Vérifications
-        assertThat(jeuRelu.getTitre()).isEqualTo("Puzzle");
-        assertThat(jeuRelu.getReference()).isEqualTo("PUZ-001");
-        assertThat(jeuRelu.getGenres()).hasSize(2);
-        assertThat(jeuRelu.getGenres()).extracting(Genre::getLibelle).containsExactlyInAnyOrder("plateau","famille");
+        assertThat(jeuBD.getTitre()).isEqualTo("Puzzle");
+        assertThat(jeuBD.getReference()).isEqualTo("PUZ-001");
+        assertThat(jeuBD.getGenres()).hasSize(2);
+        assertThat(jeuBD.getGenres()).extracting(Genre::getLibelle).containsExactlyInAnyOrder("plateau","famille");
     }
 }

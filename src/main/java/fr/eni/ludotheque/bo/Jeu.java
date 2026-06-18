@@ -21,24 +21,22 @@ public class Jeu {
     @Column(name = "no_jeu")
     private Long id;
 
-    @NonNull
-    private String titre;
+    @Column(length=50, nullable=false)
+    @NonNull private String titre;
 
-    @NonNull
-    private String reference;
+    @Column(length=13, nullable=false, unique=true)
+    @NonNull private String reference;
 
-    @Column(name = "age_min")
-    private Integer ageMin;
+    @Column(name = "age_min", nullable=true)
+    private int ageMin;
 
-    @NonNull
+    @Column( nullable=true)
     private String description;
 
-    @NonNull
-    private Integer duree;
+    @NonNull private int duree;
 
-    //@NonNull
-    @Column(name = "tarif_jour")
-    private Float tarifJour;
+    @Column(name = "tarif_jour", nullable=false)
+    @NonNull private Float tarifJour;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -48,8 +46,8 @@ public class Jeu {
     )
     private List<Genre> genres = new ArrayList<>();
 
-    public void addGenre(Genre genre) {
-        genres.add(genre);
+    public void addGenre(Genre g) {
+        genres.add(g);
     }
 
 }
