@@ -7,7 +7,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Entity
-@Table(name="GENRE")
+@Table(name="GENRES")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Data

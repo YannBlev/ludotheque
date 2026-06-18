@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="JEU")
+@Table(name="JEUX")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Data
@@ -40,7 +40,7 @@ public class Jeu {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "JEU_GENRE",
+            name = "JEUX_GENRES",
             joinColumns = @JoinColumn(name = "no_jeu"),
             inverseJoinColumns = @JoinColumn(name = "no_genre")
     )

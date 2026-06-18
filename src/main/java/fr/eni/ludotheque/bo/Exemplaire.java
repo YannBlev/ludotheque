@@ -7,7 +7,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Entity
-@Table(name="EXEMPLAIRE")
+@Table(name="EXEMPLAIRES")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Data
@@ -27,7 +27,6 @@ public class Exemplaire {
 
     @ManyToOne
     @JoinColumn(name="no_jeu", referencedColumnName = "no_jeu")
-    @NonNull
-    private Jeu jeu;
+    @NonNull private Jeu jeu;
 
 }
