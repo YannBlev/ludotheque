@@ -1,12 +1,15 @@
 spring:
   application:
-    name: ludotheque
+    name: Ludotheque
+  config:
+    import:
+      - optional:file:./config/application-local.yaml
 
   #Connection to DB
   datasource:
-    url: jdbc:sqlserver://localhost;databasename=LUDO_BD;integratedSecurity=false;encrypt=false;trustServerCertificate=false
-    username: LUDO_USER
-    password: LUDO_PWD
+    url: ${app.db.url}
+    username: ${app.db.user}
+    password: ${app.db.password}
 
   #Options to DB
   jpa:

@@ -25,7 +25,7 @@ public class ExemplaireRepositoryTest {
         Jeu domino = jeuRepository.findByTitre("Domino").orElseThrow();
 
         Exemplaire exemplaire = new Exemplaire();
-        exemplaire.setCodebarre("0000000000001");
+        exemplaire.setCodebarre("0000000000002");
         exemplaire.setLouable(false);
         exemplaire.setJeu(domino);
 

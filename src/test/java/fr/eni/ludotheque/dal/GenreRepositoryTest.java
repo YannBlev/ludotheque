@@ -20,14 +20,14 @@ public class GenreRepositoryTest {
         //Arrange (préparer)
 
         Genre genre = new Genre();
-        genre.setLibelle("deckbuilder");
+        genre.setLibelle("testGenre");
 
         //Act
         genreRepository.save(genre);
 
         //Assert
         Genre genreBD = genreRepository.findById(genre.getId()).orElseThrow();
-        assertThat(genreBD.getLibelle()).isEqualTo("deckbuilder");
+        assertThat(genreBD.getLibelle()).isEqualTo("testGenre");
 
     }
 }

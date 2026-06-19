@@ -26,7 +26,7 @@ public class LocationServiceImpl implements LocationService {
     @Transactional
     public Location creerLocation(Client client, Exemplaire exemplaire) {
 
-        if (!exemplaire.getLouable()) throw new FormatInvalide("L'exemplaire n'est pas disponible");
+        if (!exemplaire.getLouable()) throw new FormatInvalide("L'exemplaire n'est pas louable");
 
         exemplaire.setLouable(false);
         Location location = new Location();

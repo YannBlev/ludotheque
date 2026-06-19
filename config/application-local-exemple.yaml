@@ -1,0 +1,5 @@
+app:
+  db:
+    user: postgres
+    password: secret
+    url: jdbc:postgresql://localhost:5432/demo

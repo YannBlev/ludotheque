@@ -39,7 +39,7 @@ public class LocationServiceImplTest {
         locationService.creerLocation(client, exemplaire);
 
         //Arrange
-        Location location = locationRepository.findById(1L).orElseThrow();
+        Location location = locationRepository.findById(5L).orElseThrow();
         assertThat(location.getClient()).isEqualTo(client);
         assertThat(location.getExemplaire()).isEqualTo(exemplaire);
         assertThat(location.getExemplaire().getLouable()).isEqualTo(false);
