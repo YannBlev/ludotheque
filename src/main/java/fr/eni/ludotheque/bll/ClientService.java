@@ -6,6 +6,7 @@ import fr.eni.ludotheque.bo.Client;
 import java.util.List;
 
 public interface ClientService {
+    List<Client> listerClients();
     Client ajouterClient(Client client);
     List<Client> trouverParNomClient(String nom);
     boolean clientValide(Client client);
