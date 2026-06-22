@@ -45,8 +45,9 @@ insert into EXEMPLAIRES (louable, no_jeu, codebarre) values (1, 3, '200000000000
 insert into EXEMPLAIRES (louable, no_jeu, codebarre) values (1, 3, '2000000000005');
 insert into EXEMPLAIRES (louable, no_jeu, codebarre) values (1, 3, '2000000000006');
 
-insert into LOCATIONS (date_debut, date_retour, no_client, no_exemplaire) values ('18/06/2026', null, 1, 7);
-insert into LOCATIONS (date_debut, date_retour, no_client, no_exemplaire) values ('18/06/2026', null, 1, 8);
-insert into LOCATIONS (date_debut, date_retour, no_client, no_exemplaire) values ('18/06/2026', null, 1, 9);
-insert into LOCATIONS (date_debut, date_retour, no_client, no_exemplaire) values ('18/06/2026', null, 1, 10);
+insert into LOCATIONS (date_debut, date_retour, no_client, no_exemplaire) values ('18/06/2026', '19/06/2026', 1, 7);
+insert into LOCATIONS (date_debut, date_retour, no_client, no_exemplaire) values ('18/06/2026', '20/06/2026', 1, 8);
+insert into LOCATIONS (date_debut, date_retour, no_client, no_exemplaire) values ('18/06/2026', '21/06/2026', 1, 9);
+insert into LOCATIONS (date_debut, date_retour, no_client, no_exemplaire) values ('18/06/2026', '22/06/2026', 1, 10);
+insert into LOCATIONS (date_debut, date_retour, no_client, no_exemplaire) values ('18/06/2026', null, 1, 11);
 

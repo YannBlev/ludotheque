@@ -11,20 +11,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
 @Transactional
 public class LocationServiceImplTest {
 
-    @Autowired
-    LocationService locationService;
-    @Autowired
-    LocationRepository locationRepository;
-    @Autowired
-    ExemplaireRepository exemplaireRepository;
-    @Autowired
-    ClientRepository clientRepository;
+    @Autowired LocationService locationService;
+    @Autowired LocationRepository locationRepository;
+    @Autowired ExemplaireRepository exemplaireRepository;
+    @Autowired ClientRepository clientRepository;
 
     @Test
     public void testCreerLocation() {
@@ -39,11 +37,36 @@ public class LocationServiceImplTest {
         locationService.creerLocation(client, exemplaire);
 
         //Arrange
-        Location location = locationRepository.findById(5L).orElseThrow();
+        Location location = locationRepository.findById(6L).orElseThrow();
         assertThat(location.getClient()).isEqualTo(client);
         assertThat(location.getExemplaire()).isEqualTo(exemplaire);
         assertThat(location.getExemplaire().getLouable()).isEqualTo(false);
 
+    }
+
+    @Test
+    public void testRetourLocationSansFacture() {
+        //Arrange
+        Location location = locationRepository.findById(1L).orElseThrow();
+
+        //Act + Assert
+        boolean estRetourne = locationService.estRetourneSansFacture(location);
+        assertThat(estRetourne).isTrue();
+
+    }
+
+    @Test
+    public void testModifierLocation() {
+        //Arrange
+        Location location = locationRepository.findById(5L).orElseThrow();
+        location.setDateRetour(LocalDate.now());
+
+        //Act
+        locationService.modifierLocation(location);
+
+        //Assert
+        assertThat(location.getDateRetour()).isEqualTo(LocalDate.now());
+        assertThat(location.getFacture()).isEqualTo(5);
     }
 
 }

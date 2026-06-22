@@ -17,7 +17,7 @@ public interface JeuRepository extends JpaRepository<Jeu, Long> {
         FROM JEUX j
         LEFT JOIN EXEMPLAIRES e ON j.no_jeu = e.no_jeu
         LEFT JOIN LOCATIONS l ON e.no_exemplaire = l.no_exemplaire
-        WHERE l.no_location IS NULL
+        WHERE l.date_retour IS NOT NULL OR l.no_location IS NULL
         AND j.titre = ?1
     """, nativeQuery = true)
     Long countDisponibles(String titre);
@@ -33,7 +33,7 @@ public interface JeuRepository extends JpaRepository<Jeu, Long> {
         ON j.no_jeu = e.no_jeu
         LEFT JOIN LOCATIONS l
         ON e.no_exemplaire = l.no_exemplaire
-        WHERE l.no_location IS NULL
+        WHERE l.date_retour IS NOT NULL OR l.no_location IS NULL
             AND (:filtreNoGenre IS NULL OR j_g.no_genre = :filtreNoGenre) 
         GROUP BY j.titre, g.libelle
     """, nativeQuery = true)

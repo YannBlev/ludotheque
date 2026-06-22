@@ -35,4 +35,8 @@ public class Location {
     @JoinColumn(name="no_exemplaire", referencedColumnName = "no_exemplaire")
     @NonNull private Exemplaire exemplaire;
 
+    @ManyToOne
+    @JoinColumn(name="no_facture", referencedColumnName = "no_facture")
+    private Facture facture;
+
 }

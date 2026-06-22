@@ -95,7 +95,7 @@ public class JeuServiceImplTest {
                 .findFirst()
                 .orElseThrow();
 
-        assertThat(magic.getNbExemplaire()).isEqualTo(2L);
+        assertThat(magic.getNbExemplaire()).isEqualTo(5L);
     }
 
     @Test
@@ -107,7 +107,7 @@ public class JeuServiceImplTest {
 
         // Assert
         assertThat(result).isNotNull();
-        assertThat(result.size()).isEqualTo(3);
+        assertThat(result.size()).isEqualTo(6);
 
         JeuNbExemplaireDisponibleDto domino = result.stream()
                 .filter(j -> "Domino".equals(j.getTitre()))
@@ -128,6 +128,6 @@ public class JeuServiceImplTest {
                 .findFirst()
                 .orElseThrow();
 
-        assertThat(magic.getNbExemplaire()).isEqualTo(2L);
+        assertThat(magic.getNbExemplaire()).isEqualTo(4L);
     }
 }
