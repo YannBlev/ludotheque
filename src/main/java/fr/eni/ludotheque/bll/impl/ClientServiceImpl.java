@@ -4,12 +4,14 @@ import fr.eni.ludotheque.bll.ClientService;
 import fr.eni.ludotheque.bo.Adresse;
 import fr.eni.ludotheque.bo.Client;
 import fr.eni.ludotheque.dal.ClientRepository;
+import fr.eni.ludotheque.exception.ClientNotFoundException;
 import fr.eni.ludotheque.exception.FormatInvalide;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -21,6 +23,11 @@ public class ClientServiceImpl implements ClientService {
         this.clientRepository = clientRepository;
     }
 
+
+    @Override
+    public Optional<Client> getClientById(Long id) {
+        return clientRepository.findById(id);
+    }
 
     @Override
     public List<Client> listerClients() {
@@ -62,6 +69,15 @@ public class ClientServiceImpl implements ClientService {
             client.setAdresse(adresse);
             clientRepository.save(client);
         };
+    }
+
+    @Override
+    public void supprimerClient(Long id) {
+        Optional<Client> client = clientRepository.findById(id);
+        if (client.isEmpty()) {
+            throw new ClientNotFoundException(id);
+        }
+        clientRepository.deleteById(id);
     }
 
 

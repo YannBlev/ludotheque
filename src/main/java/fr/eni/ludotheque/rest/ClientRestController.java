@@ -2,6 +2,7 @@ package fr.eni.ludotheque.rest;
 
 import fr.eni.ludotheque.bll.ClientService;
 import fr.eni.ludotheque.bo.Client;
+import fr.eni.ludotheque.exception.ClientNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,4 +28,16 @@ public class ClientRestController {
         return ResponseEntity.status(HttpStatus.CREATED).header("Location", "/clients/" + clientAjoute.getId())
                 .body(clientAjoute);
     }
+
+    // DELETE
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> supprimerClient(@PathVariable Long id) {
+        try {
+            clientService.supprimerClient(id);
+            return ResponseEntity.status(HttpStatus.OK).body("success");
+        } catch (ClientNotFoundException cnf) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body( "Client not found");
+        }
+    }
+
 }
