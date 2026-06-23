@@ -11,6 +11,7 @@ import fr.eni.ludotheque.dal.ExemplaireRepository;
 import fr.eni.ludotheque.dal.FactureRepository;
 import fr.eni.ludotheque.dal.JeuRepository;
 import fr.eni.ludotheque.dal.LocationRepository;
+import fr.eni.ludotheque.exception.DataNotFound;
 import fr.eni.ludotheque.exception.FormatInvalide;
 import jakarta.transaction.Transactional;
 import lombok.NonNull;
@@ -22,6 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -42,12 +44,15 @@ public class LocationServiceImpl implements LocationService{
     @Override
     public Location ajouterLocation(LocationDTO locationDto  ) {
         //Exemplaire exemplaire = exemplaireRepository.findByCodebarreWithJeu(locationDto.getCodebarre());
-        Exemplaire exemplaire = exemplaireRepository.findByCodebarre(locationDto.getCodebarre());
+        Optional<Exemplaire> exemplaireTrouve = exemplaireRepository.findByCodebarre(locationDto.getCodebarre());
+        if (exemplaireTrouve.isEmpty()) {
+            throw new DataNotFound("Codebarre : ",  locationDto.getCodebarre());
+        }
         Client client = new Client();
         client.setId(locationDto.getNoClient());
 
-        Location location = new Location(LocalDateTime.now(),client, exemplaire );
-        Float tarifJour = jeuRepository.findTarifJour(exemplaire.getJeu().getId());
+        Location location = new Location(LocalDateTime.now(),client, exemplaireTrouve.get() );
+        Float tarifJour = jeuRepository.findTarifJour(exemplaireTrouve.get().getJeu().getId());
         location.setTarifJour(tarifJour);
         Location newLoc = locationRepository.save(location);
 

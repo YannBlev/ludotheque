@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface ExemplaireRepository extends JpaRepository<Exemplaire, Long> {
     @Query(nativeQuery = true,
             value="""
@@ -23,5 +25,5 @@ public interface ExemplaireRepository extends JpaRepository<Exemplaire, Long> {
     //@Query("SELECT e FROM Exemplaire e JOIN FETCH e.jeu WHERE e.codebarre = :codebarre")
     //Exemplaire findByCodebarreWithJeu(@Param("codebarre") String codebarre);
 
-    Exemplaire findByCodebarre(String codebarre);
+    Optional<Exemplaire> findByCodebarre(String codebarre);
 }
