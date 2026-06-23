@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/clients")
 public class ClientRestController {
@@ -69,6 +71,13 @@ public class ClientRestController {
         } catch (ClientNotFoundException cnf) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(false, cnf.getMessage(), null));
         }
+    }
+
+    //GET
+    @GetMapping("/{name}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<Client> trouverClientParNom(@PathVariable String name) {
+        return clientService.trouverClientsParNom(name);
     }
 
 }

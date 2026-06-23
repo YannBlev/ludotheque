@@ -87,10 +87,6 @@ public class ClientServiceImpl implements ClientService {
 
         BeanUtils.copyProperties(adresseDto, client.getAdresse());
 
-        System.out.println("***********************************************");
-        System.out.println("adresse : " + client.getAdresse());
-        System.out.println("***********************************************");
-
         adresseRepository.save(client.getAdresse());
 
         return client;
