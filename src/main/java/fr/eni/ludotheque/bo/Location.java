@@ -7,6 +7,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -22,21 +23,20 @@ public class Location {
     private Long id;
 
     @Column(name="date_debut", nullable=false)
-    @NonNull private LocalDate dateDebut;
+    @NonNull private LocalDateTime dateDebut;
 
     @Column(name="date_retour")
-    private LocalDate dateRetour;
+    private LocalDateTime dateRetour;
+
+    @Basic(optional = false)
+    private float tarifJour;
 
     @ManyToOne
     @JoinColumn(name="no_client", referencedColumnName = "no_client")
     @NonNull private Client client;
 
-    @ManyToOne
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name="no_exemplaire", referencedColumnName = "no_exemplaire")
     @NonNull private Exemplaire exemplaire;
-
-    @ManyToOne
-    @JoinColumn(name="no_facture", referencedColumnName = "no_facture")
-    private Facture facture;
 
 }

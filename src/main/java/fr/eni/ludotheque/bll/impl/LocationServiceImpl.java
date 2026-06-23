@@ -6,63 +6,84 @@ import fr.eni.ludotheque.bo.Client;
 import fr.eni.ludotheque.bo.Exemplaire;
 import fr.eni.ludotheque.bo.Facture;
 import fr.eni.ludotheque.bo.Location;
+import fr.eni.ludotheque.bo.dto.LocationDTO;
+import fr.eni.ludotheque.dal.ExemplaireRepository;
 import fr.eni.ludotheque.dal.FactureRepository;
+import fr.eni.ludotheque.dal.JeuRepository;
 import fr.eni.ludotheque.dal.LocationRepository;
 import fr.eni.ludotheque.exception.FormatInvalide;
 import jakarta.transaction.Transactional;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Service
-public class LocationServiceImpl implements LocationService {
+@RequiredArgsConstructor
+public class LocationServiceImpl implements LocationService{
+    @NonNull
+    final private LocationRepository locationRepository;
 
-    private final FactureRepository factureRepository;
-    private final FactureService factureService;
-    private LocationRepository locationRepository;
+    @NonNull
+    final private JeuRepository jeuRepository;
 
-    @Autowired
-    public LocationServiceImpl(LocationRepository locationRepository, FactureRepository factureRepository, FactureService factureService) {
-        this.locationRepository = locationRepository;
-        this.factureRepository = factureRepository;
-        this.factureService = factureService;
+    @NonNull
+    final private ExemplaireRepository exemplaireRepository;
+
+    @NonNull
+    final private FactureRepository factureRepository;
+
+
+    @Override
+    public Location ajouterLocation(LocationDTO locationDto  ) {
+        //Exemplaire exemplaire = exemplaireRepository.findByCodebarreWithJeu(locationDto.getCodebarre());
+        Exemplaire exemplaire = exemplaireRepository.findByCodebarre(locationDto.getCodebarre());
+        Client client = new Client();
+        client.setId(locationDto.getNoClient());
+
+        Location location = new Location(LocalDateTime.now(),client, exemplaire );
+        Float tarifJour = jeuRepository.findTarifJour(exemplaire.getJeu().getId());
+        location.setTarifJour(tarifJour);
+        Location newLoc = locationRepository.save(location);
+
+        return newLoc;
     }
 
     @Override
     @Transactional
-    public Location creerLocation(Client client, Exemplaire exemplaire) {
-
-        if (!exemplaire.getLouable()) throw new FormatInvalide("L'exemplaire n'est pas louable");
-
-        exemplaire.setLouable(false);
-        Location location = new Location();
-        location.setClient(client);
-        location.setExemplaire(exemplaire);
-        location.setDateDebut(LocalDate.now());
-
-        return locationRepository.save(location);
-    }
-
-    @Override
-    public void modifierLocation(Location location) {
-
-        if (sansFacture(location)) {
-            Facture facture = new Facture();
-            facture.setId(location.getId());
-            factureService.creerFacture(facture);
+    public Facture retourExemplaires(List<String> codebarres) {
+        Facture facture = new Facture();
+        //facture
+        Location location = null;
+        float prix = 0;
+        for(String codebarre : codebarres) {
+            location = locationRepository.findLocationByCodebarreWithJeu(codebarre);
+            location.setDateRetour(LocalDateTime.now());
+            facture.addLocation(location);
+            //TODO : save date retour
+            long nbJours = ChronoUnit.DAYS.between(location.getDateDebut(), location.getDateRetour()) +1;
+            prix += (nbJours * location.getTarifJour());
         }
+        facture.setPrix(prix);
+        return factureRepository.save(facture);
+    }
 
-        locationRepository.save(location);
+    public Facture payerFacture( Long noFacture){
+        Facture facture = factureRepository.findById(noFacture).orElse(null);
+        facture.setDatePaiement(LocalDateTime.now());
+        Facture factureBD = factureRepository.save(facture);
+        return factureBD;
     }
 
     @Override
-    public boolean estRetourneSansFacture(Location location) {
-        return locationRepository.countLocationByIdRetourSansFacture(location.getId()) > 0;
+    public void trouverLocationParExemplaireCodebarre(String codebarre) {
+        // TODO Auto-generated method stub
+
     }
 
-    @Override
-    public boolean sansFacture(Location location) {
-        return false;
-    }
 }

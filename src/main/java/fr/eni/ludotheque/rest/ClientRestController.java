@@ -2,6 +2,7 @@ package fr.eni.ludotheque.rest;
 
 import fr.eni.ludotheque.bll.ClientService;
 import fr.eni.ludotheque.bo.Client;
+import fr.eni.ludotheque.bo.dto.ClientDTO;
 import fr.eni.ludotheque.exception.ClientNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class ClientRestController {
 
     // POST
     @PostMapping
-    public ResponseEntity<Client> ajouterClient(@Valid @RequestBody Client client, BindingResult result) {
+    public ResponseEntity<Client> ajouterClient(@Valid @RequestBody ClientDTO client, BindingResult result) {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().build();
         }
@@ -37,6 +38,20 @@ public class ClientRestController {
             return ResponseEntity.status(HttpStatus.OK).body("success");
         } catch (ClientNotFoundException cnf) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body( "Client not found");
+        }
+    }
+
+    // PUT
+    @PutMapping("/{id}")
+    public ResponseEntity<Client> modifierClient(@PathVariable Long id, @Valid @RequestBody ClientDTO clientDto, BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        try {
+            Client clientModifie = clientService.modifierClient(id, clientDto);
+            return ResponseEntity.status(HttpStatus.OK).body(clientModifie);
+        } catch (ClientNotFoundException cnf) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 

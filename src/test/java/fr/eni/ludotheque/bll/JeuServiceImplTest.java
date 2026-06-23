@@ -2,10 +2,11 @@ package fr.eni.ludotheque.bll;
 
 import fr.eni.ludotheque.bo.Genre;
 import fr.eni.ludotheque.bo.Jeu;
-import fr.eni.ludotheque.bo.dto.JeuNbExemplaireDisponibleDto;
 import fr.eni.ludotheque.dal.GenreRepository;
 import fr.eni.ludotheque.dal.JeuRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
+@Slf4j
 public class JeuServiceImplTest {
 
     @Autowired
@@ -54,80 +56,14 @@ public class JeuServiceImplTest {
     }
 
     @Test
-    public void testEstDisponible() {
-        //Arrange
-        Jeu jeu = jeuRepository.findByTitre("Domino").orElseThrow();
+    @DisplayName("Test trouver les jeux et le nb d'exemplaires disponible")
+    public void testTrouverJeuxDisponibles() {
 
-        // Act
-        boolean jeuDisponible = jeuService.estDisponible(jeu);
-
-        //Assert
-        assertThat(jeuDisponible).isTrue();
+        List<Jeu> jeux = jeuService.listeJeuxCatalogue("TOUS");
+        System.out.println("------------------------------------------------------------------");
+        jeux.forEach(System.out::println);
+        System.out.println("------------------------------------------------------------------");
+        log.info(jeux.toString());
     }
 
-    @Test
-    void testListJeuxDisponiblesToutGenre() {
-
-        // Arrange + Act
-        List<JeuNbExemplaireDisponibleDto> result =
-                jeuService.listeJeuxDisponibles(null);
-
-        // Assert
-        assertThat(result).isNotNull();
-        assertThat(result.size()).isEqualTo(8);
-
-        JeuNbExemplaireDisponibleDto domino = result.stream()
-                .filter(j -> "Domino".equals(j.getTitre()))
-                .findFirst()
-                .orElseThrow();
-
-        assertThat(domino.getNbExemplaire()).isEqualTo(1L);
-
-        JeuNbExemplaireDisponibleDto echec = result.stream()
-                .filter(j -> "Echec".equals(j.getTitre()))
-                .findFirst()
-                .orElseThrow();
-
-        assertThat(echec.getNbExemplaire()).isEqualTo(5L);
-
-        JeuNbExemplaireDisponibleDto magic = result.stream()
-                .filter(j -> "Magic: The Gathering".equals(j.getTitre()))
-                .findFirst()
-                .orElseThrow();
-
-        assertThat(magic.getNbExemplaire()).isEqualTo(5L);
-    }
-
-    @Test
-    void testListJeuxDisponiblesFiltreGenre() {
-
-        // Arrange + Act
-        List<JeuNbExemplaireDisponibleDto> result =
-                jeuService.listeJeuxDisponibles(2L);
-
-        // Assert
-        assertThat(result).isNotNull();
-        assertThat(result.size()).isEqualTo(6);
-
-        JeuNbExemplaireDisponibleDto domino = result.stream()
-                .filter(j -> "Domino".equals(j.getTitre()))
-                .findFirst()
-                .orElseThrow();
-
-        assertThat(domino.getNbExemplaire()).isEqualTo(1L);
-
-        JeuNbExemplaireDisponibleDto echec = result.stream()
-                .filter(j -> "Echec".equals(j.getTitre()))
-                .findFirst()
-                .orElseThrow();
-
-        assertThat(echec.getNbExemplaire()).isEqualTo(5L);
-
-        JeuNbExemplaireDisponibleDto magic = result.stream()
-                .filter(j -> "Magic: The Gathering".equals(j.getTitre()))
-                .findFirst()
-                .orElseThrow();
-
-        assertThat(magic.getNbExemplaire()).isEqualTo(4L);
-    }
 }

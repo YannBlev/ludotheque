@@ -2,37 +2,58 @@ package fr.eni.ludotheque.bll.impl;
 
 import fr.eni.ludotheque.bll.JeuService;
 import fr.eni.ludotheque.bo.Jeu;
-import fr.eni.ludotheque.bo.dto.JeuNbExemplaireDisponibleDto;
+import fr.eni.ludotheque.dal.ExemplaireRepository;
 import fr.eni.ludotheque.dal.JeuRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import fr.eni.ludotheque.exception.DataNotFound;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
-public class JeuServiceImpl implements JeuService {
-
+public class JeuServiceImpl implements JeuService{
+    @NonNull
     private JeuRepository jeuRepository;
 
-    @Autowired
-    public JeuServiceImpl(JeuRepository jeuRepository) {
-        this.jeuRepository = jeuRepository;
-    }
+    @NonNull
+    private ExemplaireRepository exemplaireRepository;
 
     @Override
-    public Jeu ajouterJeu(Jeu jeu) {
-        return jeuRepository.save(jeu);
+    public void ajouterJeu(Jeu jeu) {
+
+        jeuRepository.save(jeu);
+
+
     }
 
-    @Override
-    public boolean estDisponible(Jeu jeu) {
-        return jeuRepository.countDisponibles(jeu.getTitre()) > 0;
-    }
 
     @Override
-    public List<JeuNbExemplaireDisponibleDto> listeJeuxDisponibles(Long filtreNoGenre) {
-        return jeuRepository.listJeuxDisponibles(filtreNoGenre);
+    public Jeu trouverJeuParNoJeu(Long noJeu) {
+        Optional<Jeu> optJeu = jeuRepository.findById(noJeu);
+
+        if(optJeu.isEmpty()) {
+            throw new DataNotFound("Jeu", noJeu);
+        }
+        return optJeu.get();
+
     }
+
+
+    @Override
+    public List<Jeu> listeJeuxCatalogue(String filtreTitre) {
+        List<Jeu> jeux = jeuRepository.findAllJeuxAvecNbExemplaires(filtreTitre);
+
+        for(Jeu jeu : jeux) {
+            int nbExemplairesDisponibles = exemplaireRepository.nbExemplairesDisponibleByNoJeu(jeu.getId());
+            jeu.setNbExemplairesDisponibles(nbExemplairesDisponibles);
+        }
+
+        return jeux;
+    }
+
 
 
 }
