@@ -1,10 +1,8 @@
 package fr.eni.ludotheque.rest;
 
 import fr.eni.ludotheque.bll.JeuService;
-import fr.eni.ludotheque.bo.Client;
 import fr.eni.ludotheque.bo.Jeu;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,14 +20,10 @@ public class JeuRestController {
     // GET
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<Jeu> trouverJeuxCatalogue() {
-        String titre = "TOUS";
-        return jeuService.listeJeuxCatalogue(titre);
-    }
-
-    @GetMapping("/{titre}")
-    @ResponseStatus(code = HttpStatus.OK)
-    public List<Jeu> trouverJeuxCatalogueParNom(@PathVariable String titre) {
+    public List<Jeu> trouverJeuxCatalogueParNom(@RequestParam String titre) {
+        if (titre.isEmpty()) {
+            titre = "TOUS";
+        }
         return jeuService.listeJeuxCatalogue(titre);
     }
 
