@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/clients")
@@ -74,10 +75,16 @@ public class ClientRestController {
     }
 
     //GET
-    @GetMapping("/{name}")
+    @GetMapping("/names/{name}")
     @ResponseStatus(code = HttpStatus.OK)
     public List<Client> trouverClientParNom(@PathVariable String name) {
         return clientService.trouverClientsParNom(name);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Client> trouverClientParId(@PathVariable Long id) {
+        Client client = clientService.trouverClientParId(id);
+        return ResponseEntity.ok(client);
     }
 
 }
