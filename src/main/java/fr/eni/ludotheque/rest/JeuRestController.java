@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/jeux")
+@RequestMapping("/api/jeux")
 public class JeuRestController {
 
     private final JeuService jeuService;
@@ -21,11 +21,12 @@ public class JeuRestController {
     // GET
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<Jeu> trouverJeuxCatalogueParNom(@RequestParam String titre) {
-        if (titre.isEmpty()) {
+    public ResponseEntity<ApiResponse<List<Jeu>>> trouverJeuxCatalogueParNom(@RequestParam String titre) {
+        if (titre.isEmpty() || titre == null || "".equals(titre.trim())) {
             titre = "TOUS";
         }
-        return jeuService.listeJeuxCatalogue(titre);
+        List<Jeu> jeux =  jeuService.listeJeuxCatalogue(titre);
+        return ResponseEntity.ok(new ApiResponse(true, "ok", jeux));
     }
 
 }
