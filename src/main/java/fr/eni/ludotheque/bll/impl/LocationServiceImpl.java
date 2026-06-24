@@ -70,13 +70,14 @@ public class LocationServiceImpl implements LocationService{
             location = locationRepository.findLocationByCodebarreWithJeu(codebarre);
             location.setDateRetour(LocalDateTime.now());
             facture.addLocation(location);
-            //TODO : save date retour
+            locationRepository.save(location);
             long nbJours = ChronoUnit.DAYS.between(location.getDateDebut(), location.getDateRetour()) +1;
             prix += (nbJours * location.getTarifJour());
         }
         facture.setPrix(prix);
         return factureRepository.save(facture);
     }
+
 
     public Facture payerFacture( Long noFacture){
         Facture facture = factureRepository.findById(noFacture).orElse(null);
