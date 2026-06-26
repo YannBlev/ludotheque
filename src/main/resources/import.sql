@@ -51,6 +51,6 @@ insert into LOCATIONS (date_debut, date_retour, no_client, no_exemplaire) values
 insert into LOCATIONS (date_debut, date_retour, no_client, no_exemplaire) values ('18/06/2026', '22/06/2026', 1, 10);
 insert into LOCATIONS (date_debut, date_retour, no_client, no_exemplaire) values ('18/06/2026', null, 1, 11);
 
-INSERT INTO roles (no_role, libelle) values (1,'EMPLOYE"');
+INSERT INTO roles (no_role, libelle) values (1,'EMPLOYE');
 INSERT INTO utilisateurs (login, password) values ('michel','$2a$10$z3e2QxSZjXrGpugKeMoCxeTxGHzf6g.7d3q7jLcvuuJpDMhU9Cdwi');
 INSERT INTO utilisateurs_roles (no_role, no_utilisateur) values (1,1);
